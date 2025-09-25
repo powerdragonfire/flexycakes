@@ -34,6 +34,8 @@ export interface ILayoutProps {
     model: Model;
     /** factory function for creating the tab components */
     factory: (node: TabNode) => React.ReactNode;
+    /** if true, middle-click on a tab or border tab will close it (when closable). Defaults to false */
+    closeTabOnMiddleClick?: boolean;
     /** sets a top level class name on popout windows */
     popoutClassName?: string;
     /** object mapping keys among close, maximize, restore, more, popout to React nodes to use in place of the default icons, can alternatively return functions for creating the React nodes */
@@ -842,6 +844,10 @@ export class LayoutInternal extends React.Component<ILayoutInternalProps, ILayou
 
     isRealtimeResize() {
         return this.props.realtimeResize ?? false;
+    }
+
+    isCloseTabOnMiddleClick() {
+        return this.props.closeTabOnMiddleClick ?? false;
     }
 
     getPopoutURL() {

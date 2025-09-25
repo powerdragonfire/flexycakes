@@ -18,7 +18,7 @@ export interface IBorderButtonProps {
 }
 
 /** @internal */
-export const BorderButton = (props: IBorderButtonProps) => {
+export const BorderButton = React.memo((props: IBorderButtonProps) => {
     const { layout, node, selected, border, icons, path } = props;
     const selfRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef<HTMLInputElement | null>(null);
@@ -39,6 +39,14 @@ export const BorderButton = (props: IBorderButtonProps) => {
 
     const onAuxMouseClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         if (isAuxMouseEvent(event)) {
+            // middle click to close when enabled
+            if (layout.isCloseTabOnMiddleClick() && event.nativeEvent instanceof MouseEvent && event.nativeEvent.button === 1) {
+                if (isClosable()) {
+                    layout.doAction(Actions.deleteTab(node.getId()));
+                    event.stopPropagation();
+                    return;
+                }
+            }
             layout.auxMouseClick(node, event);
         } 
     };
@@ -198,4 +206,10 @@ export const BorderButton = (props: IBorderButtonProps) => {
             {renderState.buttons}
         </div>
     );
-};
+}, (prev, next) => (
+    prev.node === next.node &&
+    prev.selected === next.selected &&
+    prev.path === next.path &&
+    prev.layout === next.layout &&
+    prev.border === next.border
+));
