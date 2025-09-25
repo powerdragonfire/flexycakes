@@ -28,11 +28,11 @@ FlexLayout is a layout manager that arranges React components in multiple tabset
 
 ![FlexLayout Demo Screenshot](screenshots/Screenshot_light.png?raw=true "FlexLayout Demo Screenshot")
 
-[Run the Demo](https://rawgit.com/caplin/FlexLayout/demos/demos/v0.8/demo/index.html)
+[Run the Demo](https://powerdragonfire.github.io/flexycakes/demos/v1.0/demo/index.html)
 
 Try it now using [CodeSandbox](https://codesandbox.io/p/sandbox/yvjzqf)
 
-[API Doc](https://rawgit.com/caplin/FlexLayout/demos/demos/v0.8/typedoc/index.html)
+[API Doc](https://powerdragonfire.github.io/flexycakes/demos/v1.0/typedoc/index.html)
 
 [Screenshot of Caplin Liberator Explorer using FlexLayout](https://rawgit.com/caplin/FlexLayout/demos/demos/v0.20/images/LiberatorExplorerV3_3.PNG)
 
@@ -216,7 +216,7 @@ Each type of node has a defined set of requires/optional attributes.
 
 Weights on rows and tabsets specify the relative weight of these nodes within the parent row, the actual values do not matter just their relative values (ie two tabsets of weights 30,70 would render the same if they had weights of 3,7).
 
-NOTE: the easiest way to create your initial layout JSON is to use the [demo](https://rawgit.com/caplin/FlexLayout/demos/demos/v0.8/demo/index.html) app, modify one of the
+NOTE: the easiest way to create your initial layout JSON is to use the [demo](https://powerdragonfire.github.io/flexycakes/demos/v1.0/demo/index.html) app, modify one of the
 existing layouts by dragging/dropping and adding nodes then press the 'Show Layout JSON in console' button to print the JSON to the browser developer console.
 
 By changing global or node attributes you can change the layout appearance and functionality, for example:
