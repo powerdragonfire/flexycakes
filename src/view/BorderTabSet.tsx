@@ -194,7 +194,7 @@ export const BorderTabSet = (props: IBorderTabSetProps) => {
             document.addEventListener("pointerdown", onBodyPointerDown);
             return () => document.removeEventListener("pointerdown", onBodyPointerDown);
         }
-         
+        console.error("BorderTabSet pinned returned empty callback.")
         return () => {};
     }, [selectedTabNode, isPinned, border, layout]);
 
