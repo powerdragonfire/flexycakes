@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.3.0
+
+- **New Feature:** Floating Popout, by @emiljas-hexagon
+    - **Added:** Introduced `IJsonPopup` interface to define the structure of popup windows
+    - **Added:** Created `LayoutPopup` class to manage popup window behavior and state
+    - **Enhanced:** Updated `Model` class to handle popup windows alongside regular windows
+    - **Enhanced:** Enhanced `RowNode` and `TabSetNode` to support popup-specific logic
+    - **Added:** Implemented resizing and moving functionality for popups in `LayoutInternal`
+    - **Added:** Added new icons for floating and dockable states in `Icons` component
+    - **Added:** Developed `Popup` component to render popups using React portals
+    - **Enhanced:** Modified `Row` and `TabButton` components to accommodate popup interactions
+    - **Enhanced:** Updated styles for popup tab bars in various CSS files
+
 ## 1.2.1
 
 - **Fixed:** v0.9 Hidden Tabset Fix, courtesy of @Lukas Götz. See PR Conversation [here](https://github.com/caplin/FlexLayout/pull/485).
