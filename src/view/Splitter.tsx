@@ -80,7 +80,9 @@ export const Splitter = (props: ISplitterProps) => {
             outlineDiv.current.appendChild(handleDiv.current);
         }
 
-        const r = selfRef.current?.getBoundingClientRect()!;
+        const r = selfRef.current?.getBoundingClientRect();
+        if (!r) return;
+        
         const rect = new Rect(
             r.x - layout.getDomRect()!.x,
             r.y - layout.getDomRect()!.y,

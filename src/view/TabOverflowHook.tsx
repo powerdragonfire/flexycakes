@@ -153,7 +153,8 @@ export const useTabOverflow = (
     const onScrollPointerDown = (event: React.PointerEvent<HTMLElement>) => {
         event.stopPropagation();
         miniScrollRef.current!.setPointerCapture(event.pointerId)
-        const r = miniScrollRef.current?.getBoundingClientRect()!;
+        const r = miniScrollRef.current?.getBoundingClientRect();
+        if (!r) return;
         if (orientation === Orientation.HORZ) {
             thumbInternalPos.current = event.clientX - r.x;
         } else {

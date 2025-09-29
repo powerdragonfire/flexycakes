@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.1
+
+- **Enhanced:** Added React Compiler to vite.config, updated patch/minor version of devDependencies 
+- **Fixed:** Remove Pin_Tab label from I18nLabel enum
+- **Fixed:** Add null check for getBoundingClientRect in Splitter and TabOverflowHook components
+
 ## 1.3.0
 
 - **New Feature:** Floating Popout, by @emiljas-hexagon

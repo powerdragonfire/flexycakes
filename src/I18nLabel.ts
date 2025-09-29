@@ -8,7 +8,6 @@ export enum I18nLabel {
     Maximize = "Maximize tab set",
     Restore = "Restore tab set",
     Popout_Tab = "Popout selected tab",
-    Pin_Tab = "Pin tab",
     Unpin_Tab = "Unpin tab",
     Overflow_Menu_Tooltip = "Hidden tabs",
     Error_rendering_component = "Error rendering component",
