@@ -6,7 +6,8 @@ export interface IJsonModel {
     global?: IGlobalAttributes;
     borders?: IJsonBorderNode[];
     layout: IJsonRowNode; // top level 'row' is horizontal, rows inside rows take opposite orientation to parent row (ie can act as columns)
-    popouts?: Record<string, IJsonPopout>;
+	popouts?: Record<string, IJsonPopout>;
+	popups?: Record<string, IJsonPopup>;
 }
 
 export interface IJsonRect {
@@ -19,6 +20,16 @@ export interface IJsonRect {
 export interface IJsonPopout {
     layout: IJsonRowNode;
     rect: IJsonRect;
+}
+
+export interface IJsonPopup {
+    layout: IJsonRowNode;
+	rect: IJsonRect ;
+}
+
+export interface IJsonPopup {
+    layout: IJsonRowNode;
+	rect: IJsonRect ;
 }
 
 export interface IJsonBorderNode extends IBorderAttributes {
