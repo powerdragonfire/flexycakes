@@ -363,16 +363,16 @@ export const TabSet = (props: ITabSetProps) => {
         );
     }
 
-    // Button overflow: use the hook to detect which buttons are hidden
-    const { hiddenButtons, isShowHiddenButtons } = useButtonOverflow(buttonBarRef, buttons);
-    
-    // Store all buttons before filtering
+    // Store all buttons for potential overflow menu
     const allButtons = [...buttons];
     
-    // If there are hidden buttons, add overflow button and filter out hidden ones
+    // Button overflow: use the hook to detect which buttons are hidden
+    const { hiddenButtons, isShowHiddenButtons } = useButtonOverflow(buttonBarRef, allButtons);
+    
+    // If there are hidden buttons, add overflow button and filter out hidden ones  
     if (isShowHiddenButtons && hiddenButtons.length > 0) {
-        // Remove hidden buttons from the visible list
-        buttons = buttons.filter((_, index) => !hiddenButtons.includes(index));
+        // Remove hidden buttons from the visible list (start from the end to keep indices correct)
+        buttons = allButtons.filter((_, index) => !hiddenButtons.includes(index));
         
         // Add icon overflow button
         const iconOverflowTitle = layout.i18nName(I18nLabel.Overflow_Menu_Tooltip);
