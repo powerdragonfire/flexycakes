@@ -19,6 +19,7 @@ export function BorderTab(props: IBorderTabProps) {
     const timer = React.useRef<NodeJS.Timeout | undefined>(undefined);
     const selectedNode = border.getSelectedNode();
     const pinned = selectedNode?.isPinned();
+    const previousShow = React.useRef(show);
 
     React.useLayoutEffect(() => {
         const contentRect = layout.getBoundingClientRect(selfRef.current!);
@@ -41,8 +42,20 @@ export function BorderTab(props: IBorderTabProps) {
 
     });
 
+    React.useLayoutEffect(() => {
+        if (previousShow.current !== show && typeof document !== "undefined" && "startViewTransition" in document) {
+            (document as any).startViewTransition(() => {
+                previousShow.current = show;
+            });
+        } else {
+            previousShow.current = show;
+        }
+    }, [show]);
+
     let horizontal = true;
     const style: Record<string, any> = {};
+
+    style.viewTransitionName = `border-${border.getLocation().getName()}`;
 
     if (border.getOrientation() === Orientation.HORZ) {
         style.width = border.getSize();

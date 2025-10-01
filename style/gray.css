@@ -490,6 +490,7 @@
   box-sizing: border-box;
   overflow: hidden;
   background-color: var(--color-border-tab-content);
+  view-transition-name: border-content;
 }
 .flexlayout__border_leading {
   display: flex;
@@ -713,6 +714,125 @@
 }
 
 /* ======================== End of Base Classes =========================== */
+/* View Transitions for Border Animations */
+::view-transition-old(border-content),
+::view-transition-new(border-content) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(border-left) {
+  animation-name: border-slide-out-left;
+}
+
+::view-transition-new(border-left) {
+  animation-name: border-slide-in-left;
+}
+
+::view-transition-old(border-right) {
+  animation-name: border-slide-out-right;
+}
+
+::view-transition-new(border-right) {
+  animation-name: border-slide-in-right;
+}
+
+::view-transition-old(border-top) {
+  animation-name: border-slide-out-top;
+}
+
+::view-transition-new(border-top) {
+  animation-name: border-slide-in-top;
+}
+
+::view-transition-old(border-bottom) {
+  animation-name: border-slide-out-bottom;
+}
+
+::view-transition-new(border-bottom) {
+  animation-name: border-slide-in-bottom;
+}
+
+@keyframes border-slide-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+@keyframes border-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes border-slide-out-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+@keyframes border-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes border-slide-out-top {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+@keyframes border-slide-in-top {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes border-slide-out-bottom {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+@keyframes border-slide-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* 
     gray theme overrides 
 */
