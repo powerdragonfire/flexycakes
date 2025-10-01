@@ -5,9 +5,11 @@ import { TabNode } from "../model/TabNode";
 import { BorderButton } from "./BorderButton";
 import { LayoutInternal, ITabSetRenderValues } from "./Layout";
 import { showPopup } from "./PopupMenu";
+import { showButtonPopup } from "./ButtonPopupMenu";
 import { Actions } from "../model/Actions";
 import { I18nLabel } from "../I18nLabel";
 import { useTabOverflow } from "./TabOverflowHook";
+import { useButtonOverflow } from "./ButtonOverflowHook";
 import { Orientation } from "../Orientation";
 import { CLASSES } from "../Types";
 import { isAuxMouseEvent } from "./Utils";
@@ -26,6 +28,7 @@ export const BorderTabSet = (props: IBorderTabSetProps) => {
     const toolbarRef = React.useRef<HTMLDivElement | null>(null);
     const miniScrollRef = React.useRef<HTMLDivElement | null>(null);
     const overflowbuttonRef = React.useRef<HTMLButtonElement | null>(null);
+    const iconOverflowbuttonRef = React.useRef<HTMLButtonElement | null>(null);
     const stickyButtonsRef = React.useRef<HTMLDivElement | null>(null);
     const tabStripInnerRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -75,6 +78,18 @@ export const BorderTabSet = (props: IBorderTabSetProps) => {
     const onOverflowItemSelect = (item: { node: TabNode; index: number }) => {
         layout.doAction(Actions.selectTab(item.node.getId()));
         userControlledPositionRef.current = false;
+    };
+
+    const onIconOverflowClick = (event: React.MouseEvent<HTMLElement, MouseEvent>, allButtons: React.ReactNode[]) => {
+        const items = hiddenButtons.map(h => { return { index: h, button: allButtons[h] }; });
+        const element = iconOverflowbuttonRef.current!;
+        showButtonPopup(
+            element,
+            border,
+            items,
+            layout
+        );
+        event.stopPropagation();
     };
 
     const onPopoutTab = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -234,6 +249,36 @@ export const BorderTabSet = (props: IBorderTabSetProps) => {
             );
         }
     }
+
+    // Button overflow: use the hook to detect which buttons are hidden
+    const { hiddenButtons, isShowHiddenButtons } = useButtonOverflow(toolbarRef, buttons);
+    
+    // Store all buttons before filtering
+    const allButtons = [...buttons];
+    
+    // If there are hidden buttons, add overflow button and filter out hidden ones
+    if (isShowHiddenButtons && hiddenButtons.length > 0) {
+        // Remove hidden buttons from the visible list
+        buttons = buttons.filter((_, index) => !hiddenButtons.includes(index));
+        
+        // Add icon overflow button
+        const iconOverflowTitle = layout.i18nName(I18nLabel.Overflow_Menu_Tooltip);
+        buttons.push(
+            <button
+                key="icon-overflowbutton"
+                data-layout-path={border.getPath() + "/button/icon-overflow"}
+                ref={iconOverflowbuttonRef}
+                className={cm(CLASSES.FLEXLAYOUT__BORDER_TOOLBAR_BUTTON) + " " + cm(CLASSES.FLEXLAYOUT__BORDER_TOOLBAR_BUTTON_OVERFLOW) + " " + cm(CLASSES.FLEXLAYOUT__BORDER_TOOLBAR_BUTTON_OVERFLOW_ + border.getLocation().getName())}
+                title={iconOverflowTitle}
+                onClick={(e) => onIconOverflowClick(e, allButtons)}
+                onPointerDown={onInterceptPointerDown}
+            >
+                {icons.more}
+                <div className={cm(CLASSES.FLEXLAYOUT__TAB_BUTTON_OVERFLOW_COUNT)}>{hiddenButtons.length > 0 ? hiddenButtons.length : ""}</div>
+            </button>
+        );
+    }
+
     const toolbar = (
         <div key="toolbar" ref={toolbarRef} className={cm(CLASSES.FLEXLAYOUT__BORDER_TOOLBAR) + " " + cm(CLASSES.FLEXLAYOUT__BORDER_TOOLBAR_ + border.getLocation().getName())}>
             {buttons}
