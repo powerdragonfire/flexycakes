@@ -1,7 +1,7 @@
 {
   "name": "flexycakes",
-  "version": "1.3.1",
-  "description": "A React layout manager for dashboards, nested tabs, docking, popouts, and split panels",
+  "version": "1.3.2",
+  "description": "Community fork of caplin/FlexLayout (ISC). Not affiliated.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/powerdragonfire/flexycakes.git"
