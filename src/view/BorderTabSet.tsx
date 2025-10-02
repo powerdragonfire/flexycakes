@@ -120,19 +120,16 @@ export const BorderTabSet = (props: IBorderTabSetProps) => {
         borderClasses += " " + border.getClassName();
     }
 
-    // allow customization of tabset
-    let leading : React.ReactNode = undefined;
-    let buttons: any[] = [];
-    let stickyButtons: any[] = [];
-    const renderState: ITabSetRenderValues = { leading, buttons, stickyButtons: stickyButtons, overflowPosition: undefined };
-    layout.customizeTabSet(border, renderState);
-    leading = renderState.leading;
-    stickyButtons = renderState.stickyButtons;
-    buttons = renderState.buttons;
+    const baseHeader = React.useMemo(() => {
+        const rs: ITabSetRenderValues = { leading: undefined, buttons: [], stickyButtons: [], overflowPosition: undefined };
+        layout.customizeTabSet(border, rs);
+        return rs;
+    }, [border, (layout as any).props?.onRenderTabSet]);
 
-    if (renderState.overflowPosition === undefined) {
-        renderState.overflowPosition = stickyButtons.length;
-    }
+    let leading: React.ReactNode = baseHeader.leading;
+    let stickyButtons: any[] = [...baseHeader.stickyButtons];
+    let buttons: any[] = [...baseHeader.buttons];
+
 
     if (stickyButtons.length > 0) {
         if (isDockStickyButtons) {
@@ -163,7 +160,8 @@ export const BorderTabSet = (props: IBorderTabSetProps) => {
                 <div className={cm(CLASSES.FLEXLAYOUT__TAB_BUTTON_OVERFLOW_COUNT)}>{hiddenTabs.length>0?hiddenTabs.length: ""}</div>
             </>);
         }
-        buttons.splice(Math.min(renderState.overflowPosition, buttons.length), 0,
+        const overflowPosition = baseHeader.overflowPosition === undefined ? stickyButtons.length : baseHeader.overflowPosition;
+        buttons.splice(Math.min(overflowPosition, buttons.length), 0,
             <button
                 key="overflowbutton"
                 ref={overflowbuttonRef}
@@ -194,7 +192,6 @@ export const BorderTabSet = (props: IBorderTabSetProps) => {
             document.addEventListener("pointerdown", onBodyPointerDown);
             return () => document.removeEventListener("pointerdown", onBodyPointerDown);
         }
-        console.error("BorderTabSet pinned returned empty callback.")
         return () => {};
     }, [selectedTabNode, isPinned, border, layout]);
 

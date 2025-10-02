@@ -17,7 +17,7 @@ export interface ITabButtonProps {
 }
 
 /** @internal */
-export const TabButton = (props: ITabButtonProps) => {
+export const TabButton = React.memo((props: ITabButtonProps) => {
     const { layout, node, selected, path } = props;
     const selfRef = React.useRef<HTMLDivElement | null>(null);
     const contentRef = React.useRef<HTMLInputElement | null>(null);
@@ -49,6 +49,14 @@ export const TabButton = (props: ITabButtonProps) => {
 
     const onAuxMouseClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         if (isAuxMouseEvent(event)) {
+            // middle click to close when enabled
+            if (layout.isCloseTabOnMiddleClick() && event.nativeEvent instanceof MouseEvent && event.nativeEvent.button === 1) {
+                if (isClosable()) {
+                    layout.doAction(Actions.deleteTab(node.getId()));
+                    event.stopPropagation();
+                    return;
+                }
+            }
             layout.auxMouseClick(node, event);
         } 
     };
@@ -209,4 +217,9 @@ export const TabButton = (props: ITabButtonProps) => {
             {renderState.buttons}
         </div>
     );
-};
+}, (prev, next) => (
+    prev.node === next.node &&
+    prev.selected === next.selected &&
+    prev.path === next.path &&
+    prev.layout === next.layout
+));

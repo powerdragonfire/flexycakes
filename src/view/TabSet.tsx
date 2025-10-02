@@ -185,23 +185,21 @@ export const TabSet = (props: ITabSetProps) => {
         }
     }
 
-    let leading : React.ReactNode = undefined;
-    let stickyButtons: React.ReactNode[] = [];
-    let buttons: React.ReactNode[] = [];
+    const baseHeader = React.useMemo(() => {
+        const rs: ITabSetRenderValues = { leading: undefined, stickyButtons: [], buttons: [], overflowPosition: undefined };
+        layout.customizeTabSet(node, rs);
+        return rs;
+    // depend on node identity and callback identity
+    }, [node, (layout as any).props?.onRenderTabSet]);
 
-    // allow customization of header contents and buttons
-    const renderState: ITabSetRenderValues = { leading, stickyButtons, buttons, overflowPosition: undefined };
-    layout.customizeTabSet(node, renderState);
-    leading = renderState.leading;
-    stickyButtons = renderState.stickyButtons;
-    buttons = renderState.buttons;
+    let leading: React.ReactNode = baseHeader.leading;
+    let stickyButtons: React.ReactNode[] = [...baseHeader.stickyButtons];
+    let buttons: React.ReactNode[] = [...baseHeader.buttons];
 
     const isTabStretch = node.isEnableSingleTabStretch() && node.getChildren().length === 1;
     const showClose = (isTabStretch && ((node.getChildren()[0] as TabNode).isEnableClose())) || node.isEnableClose() || layout.isPopup();
 
-    if (renderState.overflowPosition === undefined) {
-        renderState.overflowPosition = stickyButtons.length;
-    }
+    const overflowPosition = baseHeader.overflowPosition === undefined ? stickyButtons.length : baseHeader.overflowPosition;
 
     if (stickyButtons.length > 0) {
         if (!node.isEnableTabWrap() && (isDockStickyButtons || isTabStretch)) {
@@ -232,7 +230,7 @@ export const TabSet = (props: ITabSetProps) => {
                     <div className={cm(CLASSES.FLEXLAYOUT__TAB_BUTTON_OVERFLOW_COUNT)}>{hiddenTabs.length > 0 ? hiddenTabs.length : ""}</div>
                 </>);
             }
-            buttons.splice(Math.min(renderState.overflowPosition, buttons.length), 0,
+            buttons.splice(Math.min(overflowPosition, buttons.length), 0,
                 <button
                     key="overflowbutton"
                     data-layout-path={path + "/button/overflow"}

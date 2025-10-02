@@ -10,35 +10,44 @@ export function isDesktop() {
     return desktop;
 }
 /** @internal */
+const tabRenderCache: WeakMap<TabNode, { key: string; base: { leading: React.ReactNode; content: React.ReactNode; name: string; buttons: any[] } }> = new WeakMap();
+
 export function getRenderStateEx(
     layout: LayoutInternal,
     node: TabNode,
     iconAngle?: number
 ) {
-    let leadingContent = undefined;
-    const titleContent: React.ReactNode = node.getName();
     const name = node.getName();
-    if (iconAngle === undefined) {
-        iconAngle = 0;
-    }
+    const icon = node.getIcon();
+    const angle = iconAngle ?? 0;
+    const onRenderRef = (layout as any).props?.onRenderTab; // function identity
+    const cacheKey = `${name}|${icon ?? ''}|${angle}|${onRenderRef ? onRenderRef : 'no'}`;
 
-    if (leadingContent === undefined && node.getIcon() !== undefined) {
-        if (iconAngle !== 0) {
-            leadingContent = <img style={{ width: "1em", height: "1em", transform: "rotate(" + iconAngle + "deg)" }} src={node.getIcon()} alt="leadingContent" />;
-        } else {
-            leadingContent = <img style={{ width: "1em", height: "1em" }} src={node.getIcon()} alt="leadingContent" />;
+    let cached = tabRenderCache.get(node);
+    if (!cached || cached.key !== cacheKey) {
+        // base leading/content
+        let leadingContent: React.ReactNode | undefined;
+        const titleContent: React.ReactNode = name;
+        if (icon !== undefined) {
+            if (angle !== 0) {
+                leadingContent = <img style={{ width: "1em", height: "1em", transform: "rotate(" + angle + "deg)" }} src={icon} alt="leadingContent" />;
+            } else {
+                leadingContent = <img style={{ width: "1em", height: "1em" }} src={icon} alt="leadingContent" />;
+            }
         }
+
+        const buttons: any[] = [];
+        const baseState = { leading: leadingContent, content: titleContent, name, buttons };
+        // allow customization of leading contents (icon) and contents
+        layout.customizeTab(node, baseState);
+        // cache the base, but never reuse the buttons array instance directly
+        cached = { key: cacheKey, base: { ...baseState, buttons: [...baseState.buttons] } };
+        tabRenderCache.set(node, cached);
+        node.setRenderedName(baseState.name);
     }
 
-    const buttons: any[] = [];
-
-    // allow customization of leading contents (icon) and contents
-    const renderState = { leading: leadingContent, content: titleContent, name, buttons };
-    layout.customizeTab(node, renderState);
-
-    node.setRenderedName(renderState.name);
-
-    return renderState;
+    // Return a fresh object each render so callers can safely push more buttons
+    return { leading: cached.base.leading, content: cached.base.content, name: cached.base.name, buttons: [...cached.base.buttons] };
 }
 
 /** @internal */
