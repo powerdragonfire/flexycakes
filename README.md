@@ -8,7 +8,7 @@
 
 [![npm downloads](https://img.shields.io/npm/dm/react-hook-form.svg?style=for-the-badge)](https://www.npmjs.com/package/flexycakes)
 [![npm](https://img.shields.io/npm/l/react-hook-form?style=for-the-badge)](https://github.com/powerdragonfire/flexycakes/blob/master/LICENSE)
-[![Discord](https://img.shields.io/discord/754891658327359538.svg?style=for-the-badge&label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/7bERmQjH)
+[![Discord](https://img.shields.io/discord/754891658327359538.svg?style=for-the-badge&label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)]( https://discord.gg/Wbw6G7htB)
 
 </div>
 
@@ -35,7 +35,7 @@ This is **Flexycakes**, a fork of FlexLayout with enhanced features including pi
 
 <div align="center">
 
-[![Join Discord](https://img.shields.io/badge/Join%20Discord-Get%20Updates-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/7bERmQjH)
+[![Join Discord](https://img.shields.io/badge/Join%20Discord-Get%20Updates-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/Wbw6G7htB)
 
 </div>
 
