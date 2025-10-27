@@ -29,6 +29,8 @@ export const BorderTabSet = (props: IBorderTabSetProps) => {
     const stickyButtonsRef = React.useRef<HTMLDivElement | null>(null);
     const tabStripInnerRef = React.useRef<HTMLDivElement | null>(null);
 
+    const [isPending, startTransition] = React.useTransition();
+
     const icons = layout.getIcons();
 
     React.useLayoutEffect(() => {
@@ -73,8 +75,17 @@ export const BorderTabSet = (props: IBorderTabSetProps) => {
     };
 
     const onOverflowItemSelect = (item: { node: TabNode; index: number }) => {
-        layout.doAction(Actions.selectTab(item.node.getId()));
-        userControlledPositionRef.current = false;
+        if (typeof document !== "undefined" && "startViewTransition" in document) {
+            (document as any).startViewTransition(() => {
+                layout.doAction(Actions.selectTab(item.node.getId()));
+                userControlledPositionRef.current = false;
+            });
+        } else {
+            startTransition(() => {
+                layout.doAction(Actions.selectTab(item.node.getId()));
+                userControlledPositionRef.current = false;
+            });
+        }
     };
 
     const onPopoutTab = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
